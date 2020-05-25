@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+	<title>Slider 1</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+
+	<style type="text/css">
+
+		body{
+			padding-top: 100px;
+		}
+
+		#content-wrapper{
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.column{
+			width: 600px;
+			padding: 10px;
+
+		}
+
+		#featured{
+			max-width: 500px;
+			max-height: 600px;
+			object-fit: cover;
+			cursor: pointer;
+			border: 2px solid black;
+
+		}
+
+
+
+		.thumbnail{
+			object-fit: cover;
+			max-width: 180px;
+			max-height: 100px;
+			cursor: pointer;
+			opacity: 0.5;
+			margin: 5px;
+			border: 2px solid black;
+
+		}
+
+		.thumbnail:hover{
+			opacity:1;
+		}
+
+		.active{
+			opacity: 1;
+		}
+
+		#slide-wrapper{
+			max-width: 500px;
+			display: flex;
+			min-height: 100px;
+			align-items: center;
+		}
+
+		#slider{
+			width: 440px;
+			display: flex;
+			flex-wrap: nowrap;
+			overflow-x: hidden;
+
+		}
+
+		
+
+		.arrow{
+			width: 30px;
+			height: 30px;
+			cursor: pointer;
+			transition: .3s;
+		}
+
+		.arrow:hover{
+			opacity: .5;
+			width: 35px;
+			height: 35px;
+		}
+
+		
+	</style>
+</head>
+<body>
+	<div id="content-wrapper">
+		<div class="column">
+			<img id="featured" src="{{product.imageURL}}">
+
+			<div id="slide-wrapper">
+				<img id="slideLeft" class="arrow" src="{% static 'images/arrow-left.png' %}">
+
+				<div id="slider">
+					{% for image in product.image_set.all%}
+
+				
+					<img class="thumbnail" src="{{image.imageURL}}">
+
+					{% endfor %}
+			
+				</div>
+
+				<img id="slideRight" class="arrow" src="{% static 'images/arrow-right.png' %}">
+			</div>
+		</div>
+
+		<div class="column">
+			<h1>{{product}}</h1>
+			<hr>
+			<h3>${{product.price}}</h3>
+
+			<p>{{product.description}}</p>
+
+			<input value=1 type="number">
+			<a class="btn btn-dark" href="#">Add to Cart</a>
+
+		</div>
+	</div>
+
+	<script type="text/javascript">
+			let thumbnails = document.getElementsByClassName('thumbnail')
+			let activeImages = document.getElementsByClassName('active')
+			for (var i=0; i < thumbnails.length; i++){
+				thumbnails[i].addEventListener('mouseover', function(){
+
+					if (activeImages.length > 0){
+						activeImages[0].classList.remove('active')
+					}
+				
+					this.classList.add('active')
+					document.getElementById('featured').src = this.src
+				})
+
+
+			}
+
+			const buttonRight = document.getElementById('slideRight');
+			const buttonLeft = document.getElementById('slideLeft');
+
+
+			buttonRight.addEventListener('click', function(){
+				document.getElementById('slider').scrollLeft += 180;
+		    })
+
+
+
+		    buttonLeft.addEventListener('click', function(){
+		      document.getElementById('slider').scrollLeft -= 180;
+		    })
+
+	</script>
+
+</body>
+</html>
